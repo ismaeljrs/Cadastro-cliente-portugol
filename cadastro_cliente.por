@@ -2,7 +2,7 @@ Algoritmo "CadastroDeCliente"
 // Autor: Ismael Jorge Brandão
 // Professor: Ricardo
 // Objetivo: Realizar um cadastro de um cliente
-// Versão 3.0
+// Versão 4.0
 Var
     // variaveis de mexer na tela
     TELA_OPC,RGT_OPCAO,COD_RGT,i,CONT_LOOP3,CLI_DD,CLI_NUM,PASSAR,CLI_CEP: inteiro
@@ -1098,3 +1098,4 @@ inicio
         fimse
     fimenquanto
 Fimalgoritmo
+
