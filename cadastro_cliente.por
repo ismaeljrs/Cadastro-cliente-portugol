@@ -9,7 +9,7 @@ Var
     ENTER,OPC_CONF_CLI : caractere
     SOMA_SALAR,CLI_CPF: real
     //variaveis
-    CONT,CLI_TEL,VER_REGIST,TOT_GST,TEL1,TEL2,RGT_OPCAO1: inteiro
+    CONT,CLI_TEL,VER_REGIST,TOT_GST,TEL1,TEL2,RGT_OPCAO1,DIA,MES,ANO,IDADE: inteiro
     CLI_NOME,CLI_CDE,CLI_CARGO,CLI_UF,CLI_DT,VAL_CPF,VAL_DD,VAL_NUM,NOME_CID,VAL_CEP,VAL_SALA,VAL_TEL: caractere
     CLI_SALARIO: real
     LOOP1,LOOP2,LOOP3,LOOP_REP1: logico
@@ -254,6 +254,9 @@ funcao ValidaCPF(CPF: caractere): logico
 var
     NUM1 ,NUM2, NUM3 ,NUM4,NUM5 ,NUM6 ,NUM7 ,NUM8 ,NUM9 ,NUM10 ,NUM11 : inteiro
     RESULTADO1,RESULTADO2 ,DIGITO1, DIGITO2: inteiro
+    VAL_NUMERO : vetor[1..11] de inteiro
+    NUM_PARECIDO: inteiro
+    CONT :inteiro
 inicio
 
     NUM1 <-  caracpnum(copia(CPF,1,1))
@@ -267,6 +270,20 @@ inicio
     NUM9 <-  caracpnum(copia(CPF,9,1))
     NUM10 <- caracpnum(copia(CPF,10,1))
     NUM11 <- caracpnum(copia(CPF,11,1))
+
+    VAL_NUMERO[1] <- NUM1
+    VAL_NUMERO[2] <- NUM2
+    VAL_NUMERO[3] <- NUM3
+    VAL_NUMERO[4] <- NUM4
+    VAL_NUMERO[5] <- NUM5
+    VAL_NUMERO[6] <- NUM6
+    VAL_NUMERO[7] <- NUM7
+    VAL_NUMERO[8] <- NUM8
+    VAL_NUMERO[9] <- NUM9
+    VAL_NUMERO[10] <- NUM10
+    VAL_NUMERO[11] <- NUM11
+
+    // 06363335159
     // VALIDAÇÃO DIGITO 1
     RESULTADO1 <-  NUM1*10 + NUM2*9 + NUM3*8 + NUM4*7 + NUM5*6 + NUM6*5 + NUM7*4 + NUM8*3 + NUM9*2
     DIGITO1 <- (RESULTADO1 * 10) % 11
@@ -275,12 +292,25 @@ inicio
     RESULTADO2 <-  NUM1*11  + NUM2*10 + NUM3*9 + NUM4*8 + NUM5*7 + NUM6*6 + NUM7*5 + NUM8*4 + NUM9*3 + NUM10*2
     DIGITO2 <- (RESULTADO2 * 10) % 11
 
-
-    se (DIGITO1 = NUM10) e (DIGITO2 = NUM11) entao
+    // validar numero iguais
+    CONT <- 0
+    I <- 0
+    para I <- 1 ATE 10 faca
+        NUM_PARECIDO <- VAL_NUMERO[I + 1]
+        se (VAL_NUMERO[I] = NUM_PARECIDO) entao
+            CONT <- CONT + 1
+        fimse
+    fimpara
+    se CONT >= 9 entao 
+        retorne falso 
+    senao   
+        se (DIGITO1 = NUM10) e (DIGITO2 = NUM11) entao
         retorne verdadeiro
-    senao
-        retorne falso
+        senao
+            retorne falso
+        fimse
     fimse
+
 
 fimfuncao
 
@@ -559,7 +589,7 @@ inicio
                     fimenquanto
                     se LOOP_REP1 = verdadeiro entao
                         LOOP3 <- verdadeiro
-                    senao 
+                    senao
                         LOOP_REP1 <- falso
                         escreval("--------------------------------------------------------------")
                         escreval("|                                                            |")
@@ -575,7 +605,7 @@ inicio
                         escreva("Aperte enter para continuar >>> ")
                         leia(ENTER)
                         interrompa
-                    fimse 
+                    fimse
                     // CEP
                     enquanto LOOP3 = verdadeiro faca
                         escreva("CEP.........................: ")
@@ -591,7 +621,7 @@ inicio
                             se PASSAR <> 0 entao
                                 // CLI_CEP <- caracpnum(VAL_CEP)
                                 LOOP3 <- falso
-                            senao 
+                            senao
                                 escreval("CEP inválido: digite apenas números.")
                             fimse
 
@@ -604,10 +634,10 @@ inicio
                         fimse
 
                     fimenquanto
-                   
+
                      se LOOP_REP1 = verdadeiro entao
                         LOOP3 <- verdadeiro
-                    senao 
+                    senao
                         LOOP_REP1 <- falso
                         escreval("--------------------------------------------------------------")
                         escreval("|                                                            |")
@@ -623,7 +653,7 @@ inicio
                         escreva("Aperte enter para continuar >>> ")
                         leia(ENTER)
                         interrompa
-                    fimse 
+                    fimse
                     enquanto LOOP3 = verdadeiro faca
                         escreva("Número......................: ")
                         leia(VAL_NUM)
@@ -636,7 +666,7 @@ inicio
                             PASSAR <- PASSAR + CLI_NUM
                             se PASSAR <> 0 entao
                                 LOOP3 <- falso
-                            senao 
+                            senao
                                 escreval("Número Invalido : Digite Apenas números.")
                             fimse
                         fimse
@@ -644,7 +674,7 @@ inicio
 
                     se LOOP_REP1 = verdadeiro entao
                         LOOP3 <- verdadeiro
-                    senao 
+                    senao
                         LOOP_REP1 <- falso
                         escreval("--------------------------------------------------------------")
                         escreval("|                                                            |")
@@ -660,7 +690,7 @@ inicio
                         escreva("Aperte enter para continuar >>> ")
                         leia(ENTER)
                         interrompa
-                    fimse 
+                    fimse
 
                     enquanto LOOP3 = verdadeiro faca
                         escreva("UF..........................: ")
@@ -680,7 +710,7 @@ inicio
 
                     se LOOP_REP1 = verdadeiro entao
                         LOOP3 <- verdadeiro
-                    senao 
+                    senao
                         LOOP_REP1 <- falso
                         escreval("--------------------------------------------------------------")
                         escreval("|                                                            |")
@@ -696,12 +726,12 @@ inicio
                         escreva("Aperte enter para continuar >>> ")
                         leia(ENTER)
                         interrompa
-                    fimse 
+                    fimse
 
-                    
+
                     se LOOP_REP1 = verdadeiro entao
                         LOOP3 <- verdadeiro
-                    senao 
+                    senao
                         LOOP_REP1 <- falso
                         escreval("--------------------------------------------------------------")
                         escreval("|                                                            |")
@@ -717,8 +747,8 @@ inicio
                         escreva("Aperte enter para continuar >>> ")
                         leia(ENTER)
                         interrompa
-                    fimse 
-                    //ideia DD
+                    fimse
+                    //DD
                     enquanto LOOP3 = verdadeiro faca
                         escreva("DDD.........................: ")
                         leia(VAL_DD)
@@ -726,7 +756,7 @@ inicio
                             LOOP_REP1 <- falso
                             LOOP3 <- falso
                         senao
-                            se compr(VAL_DD) >=3  entao 
+                            se compr(VAL_DD) >=3  entao
                                 escreval("Por favor, digite apenas 2 dígitos para o DD.")
                             senao
                                 CLI_DD <- caracpnum(VAL_DD)
@@ -738,14 +768,14 @@ inicio
                                 fimpara
                                 se LOOP3 = verdadeiro entao
                                     escreval("DD inválido. Por favor, informe um DD válido.")
-                                fimse  
+                                fimse
                             fimse
                         fimse
                     fimenquanto
                     //TELEFONE
                     se LOOP_REP1 = verdadeiro entao
                         LOOP3 <- verdadeiro
-                    senao 
+                    senao
                         LOOP_REP1 <- falso
                         escreval("--------------------------------------------------------------")
                         escreval("|                                                            |")
@@ -761,7 +791,7 @@ inicio
                         escreva("Aperte enter para continuar >>> ")
                         leia(ENTER)
                         interrompa
-                    fimse 
+                    fimse
                     //TELEFONE
                     enquanto LOOP3 = verdadeiro faca
                         escreva("Telefone....................: ")
@@ -782,14 +812,14 @@ inicio
                                     fimse
                                 fimse
                             senao
-                               escreval("O telefone deve conter exatamente 9 dígitos.")    
+                               escreval("O telefone deve conter exatamente 9 dígitos.")
                             fimse
                         fimse
                     fimenquanto
 
                     se LOOP_REP1 = verdadeiro entao
                         LOOP3 <- verdadeiro
-                    senao 
+                    senao
                         LOOP_REP1 <- falso
                         escreval("--------------------------------------------------------------")
                         escreval("|                                                            |")
@@ -805,7 +835,7 @@ inicio
                         escreva("Aperte enter para continuar >>> ")
                         leia(ENTER)
                         interrompa
-                    fimse 
+                    fimse
                     // CPF
                     enquanto LOOP3 = verdadeiro faca
                         escreva("CPF.........................: ")
@@ -835,7 +865,7 @@ inicio
 
                     se LOOP_REP1 = verdadeiro entao
                         LOOP3 <- verdadeiro
-                    senao 
+                    senao
                         LOOP_REP1 <- falso
                         escreval("--------------------------------------------------------------")
                         escreval("|                                                            |")
@@ -851,11 +881,16 @@ inicio
                         escreva("Aperte enter para continuar >>> ")
                         leia(ENTER)
                         interrompa
-                    fimse 
-                    // teste DATA
+                    fimse
+                    // VALIDAÇÃO DATA
                     enquanto LOOP3 = verdadeiro faca
                         escreva("Data de Nascimento..(OBS: /): ")
                         leia(CLI_DT)
+                        IDADE <- 0
+                        DIA <- caracpnum(copia(CLI_DT,1,2))
+                        MES <- caracpnum(copia(CLI_DT,4,2))
+                        ANO <- caracpnum(copia(CLI_DT,7,4))
+                        IDADE <- 2025 - ANO
                         se ((CLI_DT) = "Sair") ou ((CLI_DT) = "sair") ou ((CLI_DT) = "SAIR")  entao
                             LOOP_REP1 <- falso
                             LOOP3 <- falso
@@ -866,10 +901,18 @@ inicio
                                 se compr(CLI_DT) < 10 entao
                                 escreval("Data inválida: verifique os números e a barra (/).")
                                 senao
-                                    se val_data(CLI_DT) = "Data valida" entao
-                                        LOOP3 <- falso
+                                    se idade > 90 entao
+                                        escrevaL("Idade inválida: o limite máximo permitido é de 90 anos.")
                                     senao
-                                        escreval(val_data(CLI_DT))
+                                        se idade < 18 entao
+                                            escrevaL("Idade inválida: é necessário ter pelo menos 18 anos.")
+                                        senao        
+                                            se (val_data(CLI_DT) = "Data valida") e (idade < 90) e (idade > 18) entao
+                                                LOOP3 <- falso
+                                            senao
+                                                escreval(val_data(CLI_DT))
+                                            fimse
+                                        fimse
                                     fimse
                                 fimse
                             fimse
@@ -877,7 +920,7 @@ inicio
                     fimenquanto
                     se LOOP_REP1 = verdadeiro entao
                         LOOP3 <- verdadeiro
-                    senao 
+                    senao
                         LOOP_REP1 <- falso
                         escreval("--------------------------------------------------------------")
                         escreval("|                                                            |")
@@ -893,7 +936,7 @@ inicio
                         escreva("Aperte enter para continuar >>> ")
                         leia(ENTER)
                         interrompa
-                    fimse 
+                    fimse
                     enquanto LOOP3 = verdadeiro faca
                         escreva("Cargo.......................: ")
                         leia(CLI_CARGO)
@@ -928,7 +971,7 @@ inicio
                         escreva("Aperte enter para continuar >>> ")
                         leia(ENTER)
                         interrompa
-                    fimse 
+                    fimse
                     enquanto LOOP3 = verdadeiro faca
 
                         escreva("Salário.....................: ")
@@ -946,7 +989,7 @@ inicio
                             fimse
                         fimse
                     fimenquanto
-                         
+
                     se LOOP_REP1 = verdadeiro entao
                         LOOP2 <- verdadeiro
                         LOOP_REP1 <- falso
@@ -966,7 +1009,7 @@ inicio
                         escreva("Aperte enter para continuar >>> ")
                         leia(ENTER)
                         interrompa
-                    fimse 
+                    fimse
                 fimenquanto
                 enquanto (LOOP2 = verdadeiro) faca
                     escreval("================================================================")
@@ -978,6 +1021,7 @@ inicio
 
                     se (OPC_CONF_CLI = "s") ou (OPC_CONF_CLI = "S") entao
                         // Adicionar nos Vetores.
+                        limpatela
                         VET_NOMES[CONT] <- CLI_NOME
                         VET_CEP[CONT] <- CLI_CEP
                         VET_NUM[CONT] <- CLI_NUM
@@ -992,19 +1036,47 @@ inicio
                         CONT <- CONT + 1
                         TOT_GST <- TOT_GST + 1
                         LOOP2 <- falso
+                        escreval("--------------------------------------------------------------")
+                        escreval("|                                                            |")
+                        escreval("|                                                            |")
+                        escreval("|                                                            |")
+                        escreval("|                                                            |")
+                        escreval("|               CADASTRO REALIZADO COM SUCESSO               |")
+                        escreval("|                                                            |")
+                        escreval("|                                                            |")
+                        escreval("|                                                            |")
+                        escreval("|                                                            |")
+                        escreval("--------------------------------------------------------------")
+                        escreva("Aperte enter para continuar >>> ")
+                        leia(ENTER)
                     fimse
                     se (OPC_CONF_CLI = "n") ou (OPC_CONF_CLI = "N") entao
                         limpatela
+                        escreval("--------------------------------------------------------------")
+                        escreval("|                                                            |")
+                        escreval("|                                                            |")
+                        escreval("|                                                            |")
+                        escreval("|                                                            |")
+                        escreval("|                     CADASTRO CANCELADO                     |")
+                        escreval("|                                                            |")
+                        escreval("|               Operação interrompida pelo usuário.          |")
+                        escreval("|                                                            |")
+                        escreval("|                                                            |")
+                        escreval("|                                                            |")
+                        escreval("|                                                            |")
+                        escreval("--------------------------------------------------------------")
+                        escreva("Aperte enter para continuar >>> ")
+                        leia(ENTER)
                         LOOP2 <- falso
                     fimse
                 fimenquanto
             senao
                 se (TELA_OPC = 3) entao
                     limpatela
-                    escreval("*----------------------------------------------------------------*")
+                    escreval("*=================================================================*")
                     escreval("                          FIM DO PROGRAMA")
                     escreval("                 Obrigado por utilizar o sistema!")
-                    escreval("*----------------------------------------------------------------*")
+                    escreval("*=================================================================*")
                     LOOP1 <- falso
                 senao
                     limpatela
